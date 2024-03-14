@@ -1,0 +1,25 @@
+﻿@model ToDoList.Core.Models.ToDoItem
+
+<div class="card mt-4">
+    <div class="card-body">
+        <form id="addItemForm">
+            <div class="mb-3">
+                <label for="Title" class="form-label">Title</label>
+                <input type="text" asp-for="Title" class="form-control" placeholder="Enter title"
+                       data-val="true"
+                       data-val-required="The Title field is required." required>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter description"
+                          data-val="true"
+                          data-val-required="The Description field is required." required></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Add</button>
+            </div>
+        </form>
+    </div>
+</div>

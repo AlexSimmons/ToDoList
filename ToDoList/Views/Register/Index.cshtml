@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/signin.css" rel="stylesheet" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</head>
+<body class="text-center">
+
+    <main class="form-signin">
+        <form class="form-signin" method="post" action="/Register/SignIn" novalidate>
+            <img class="mb-4" src="~/images/todolist.png" alt="todo-list logo" height="90">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingName" name="name" placeholder="Name"
+                       data-val="true"
+                       data-val-required="The Name field is required." required>
+                <label for="floatingName">Name</label>
+                <span class="text-danger field-validation-valid" data-valmsg-for="name" data-valmsg-replace="true"></span>
+            </div>
+
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingInput" name="email" placeholder="name@example.com"
+                       data-val="true"
+                       data-val-required="The Email field is required."
+                       data-val-email="The Email field is not a valid e-mail address." required>
+                <label for="floatingInput">Email address</label>
+                <span class="text-danger field-validation-valid" data-valmsg-for="email" data-valmsg-replace="true"></span>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Enter</button>
+        </form>
+
+    </main>
+</body>
+</html>

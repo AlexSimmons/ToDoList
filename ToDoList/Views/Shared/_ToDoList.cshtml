@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ToDoList.Core.Models.ToDoItem>
+
+@if (Model.Any())
+{
+    @foreach (var item in Model)
+    {
+        <div class="todo-item" style="display: none;">
+            <div class="list-group-item list-group-item-action py-3 lh-tight position-relative">
+                <div class="d-flex align-items-center">
+
+                    <div class="col-auto">
+
+                        <div class="circle d-flex align-items-center justify-content-center @(item.IsCompleted ? "selected" : "")"
+                             onclick="toggleComplete(this);" data-id="@item.Id">
+                            <i class="bi bi-check-circle"></i>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </strong>
+                            <small>
+                                @item.CreatedAt.ToShortDateString()
+                            </small>
+                        </div>
+                        <div class="col-10 mb-1 small">@Html.DisplayFor(modelItem => item.Description)</div>
+                    </div>
+                </div>
+                <div class="trash-can-icon">
+                    <a href="javascript:void(0);" onclick="deleteItem(this);" data-id="@item.Id">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+
+    <div class="todo-item">
+        <div class="list-group-item list-group-item-action py-3 lh-tight position-relative">
+            <h3 class="text-center mt-4 mb-3">No items to display</h3>
+        </div>
+    </div>
+
+}

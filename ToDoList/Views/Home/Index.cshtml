@@ -1,0 +1,147 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row justify-content-center">
+    <!-- Add Task Section -->
+    <div class="col-md-4">
+        <h3 class="text-center mt-4 mb-3">Add Reminder</h3>
+
+        @await Html.PartialAsync("_AddToDo")
+    </div>
+
+    <!-- Tasks Lists Section (70% width) -->
+    <div class="col-md-8">
+        <!-- Waiting Tasks Section -->
+        <div class="mb-5">
+            <!-- Add margin-bottom for spacing between sections -->
+            <h3 class="text-center mt-4 mb-3">Waiting</h3>
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width:100%; margin-top:25px;">
+                <div class="list-group list-group-flush border-bottom scrollarea">
+                    <div id="todoItemsUncomplete"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complete Tasks Section -->
+        <div>
+            <h3 class="text-center mt-4 mb-3">Complete</h3>
+            <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white" style="width:100%">
+                <div class="list-group list-group-flush border-bottom scrollarea">
+                    <div id="todoItemsComplete"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        var rebuildListsTimeout; //used to rebounce the delay
+
+        $(document).ready(function () {
+            loadCompletedList();
+            loadUncompletedList();
+
+            $('#addItemForm').submit(function (event) {
+                event.preventDefault();
+
+                if (!$(this).valid()) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("AddItem", "AddToDo")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function (response) {
+                        $('#addItemForm').trigger("reset");
+                        loadUncompletedList();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error adding item.');
+                    }
+                });
+            });
+
+
+        });
+
+        function loadUncompletedList() {
+            $.ajax({
+                url: '@Url.Action("ToDoItemsUnComplete", "ToDoItems")',
+                type: 'GET',
+                success: function (response) {
+                    $('#todoItemsUncomplete').html(response);
+                    fadeInResults('todoItemsUncomplete');
+                }
+            });
+        }
+
+        function loadCompletedList() {
+            $.ajax({
+                url: '@Url.Action("ToDoItemsComplete", "ToDoItems")',
+                type: 'GET',
+                success: function (response) {
+                    $('#todoItemsComplete').html(response);
+                    fadeInResults('todoItemsComplete');
+                }
+            });
+        }
+
+        function fadeInResults(containerId) {
+            $('#' + containerId + ' .todo-item').hide().each(function (i) {
+                $(this).delay(100 * i).fadeIn(500); // Adjust delay and fade duration as needed
+            });
+        }
+
+        function deleteItem(element) {
+
+            event.preventDefault();
+
+            var itemId = $(element).data('id');
+            var itemContainer = $(element).closest('.list-group-item');
+            itemContainer.addClass('bg-danger');
+
+            $.ajax({
+                url: '@Url.Action("Delete", "ToDoItems")' + '/' + itemId,
+                type: 'DELETE',
+                success: function (response) {
+                    itemContainer.fadeOut();
+                },
+                error: function (xhr, status, error) {
+
+                    itemContainer.removeClass('bg-danger');
+                    alert('Error: ' + error);
+                }
+            });
+        }
+
+        function toggleComplete(element) {
+            var itemId = $(element).data('id');
+
+            $.ajax({
+                url: '@Url.Action("ToggleComplete", "ToDoItems")',
+                type: 'PUT',
+                data: { id: itemId },
+                success: function (response) {
+                    $(element).toggleClass('selected');
+
+                    // Clear any existing timeout to reset the delay
+                    clearTimeout(rebuildListsTimeout);
+
+                    // Set a new timeout to rebuild the lists after 2 seconds without further interaction
+                    rebuildListsTimeout = setTimeout(function () {
+                        loadCompletedList();
+                        loadUncompletedList();
+                    }, 2000);
+                },
+                error: function (xhr, status, error) {
+                    alert('Error: ' + error);
+                }
+            });
+        }
+
+    </script>
+}

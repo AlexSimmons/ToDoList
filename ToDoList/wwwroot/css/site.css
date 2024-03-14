@@ -1,0 +1,66 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Circle styling */
+.circle {
+    width: 30px;
+    height: 30px;
+    margin-right: 20px;
+    border-radius: 50%;
+    background-color: #cfcfcf;
+    transition: background-color 0.3s ease-in-out;
+}
+
+    /* Check icon styling */
+    .circle i {
+        color: transparent;
+        transition: color 0.3s ease-in-out; 
+    }
+
+    /* Apply styles when hovering over the circle */
+    .circle:hover {
+        background-color: rgba(40, 167, 69, 0.7);
+    }
+
+        /* Apply styles to the check icon when hovering over the circle */
+        .circle:hover i {
+            color: #ffffff; /* White color */
+        }
+
+    /* Apply styles to the circle and check icon when selected */
+    .circle.selected {
+        background-color: #28a745;
+    }
+
+        .circle.selected i {
+            color: #ffffff;
+        }
+
+.trash-can-icon {
+    position: absolute;
+    color:white;
+    top: 75%;
+    right: 15px;
+    transform: translateY(-50%);
+}
+
+    .trash-can-icon:hover {
+        color:red;
+        font-weight:bold;
+    }
