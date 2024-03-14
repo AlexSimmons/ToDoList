@@ -45,7 +45,6 @@ namespace ToDoList.Web.Controllers
                 return Json(new { success = false, message = "Item not added." });
             }
 
-            // If model state is invalid, return to the form with validation messages
             return View("Index", new ToDoItem());
         }
     }
